@@ -1,0 +1,110 @@
+/* STYLE FOR THE RETRO BRICK BACKGROUND */
+/* https://leaverou.github.io/css3patterns/# */
+
+html {
+    background: linear-gradient(315deg, transparent 75%, #d45d55 0)-10px 0,
+    linear-gradient(45deg, transparent 75%, #d45d55 0)-10px 0,
+    linear-gradient(135deg, #a7332b 50%, transparent 0) 0 0,
+    linear-gradient(45deg, #6a201b 50%, #561a16 0) 0 0 #561a16;
+    background-size: 20px 20px;
+    padding: 1.5em 1.5em;
+}
+
+/* FONT EFFECT DEFINITION */
+
+body {
+    color: whitesmoke;
+    background-color:  rgb(167, 33, 33);
+    text-shadow: 0px 2px 8px #cc8b41, 1px 0 1px #cc8b41, 1px 0px 0px #cc8b41;
+    text-align: center;
+    margin: 1em;
+    padding: .5em;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+/* CONTAINER FORMATTING */
+
+/* #gameMenu {
+    max-width: 900px;
+}
+
+#gameWelcome {
+    height: 200px;
+}
+
+#gameGifBankBox {
+    min-height: 100px;
+}
+
+#gameGifBox {
+    min-height: 500px;
+}
+
+div.nes-container.with-title.is-dark {
+    border-color: #ffffff;
+}
+
+div.nes-container.is-rounded {
+    width: 250px;
+    height: 200px;
+    display: inline-flex;
+    flex-direction: column;
+    font-size: 8px;
+    background-color: #cc8b41;
+    border: dashed .25em #b00;
+} */
+
+/* BUTTON FORMATTING */
+
+.list-group-horizontal .list-group-item {
+	display: inline-block;
+}
+
+/* FLEXBOX FORMATTING WITH MEDIA QUERIES */
+
+.row {
+    display: inline-flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    width: 575px;
+    
+}
+.row-bottom {
+    display: inline-block;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    width: 575px;
+}
+
+/* FOR DESKTOP: */
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-6-button {width: 50%; align-self: center;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+@media only screen and (max-width: 768px) {
+    /* FOR MOBILE PHONES: */
+    [class*="col-"] {width: 100%;}
+    body {font-size: 12px; overflow: auto}
+    .row, .row-bottom {width: 100%; flex-direction: column;}
+    .html {padding: 1.25em;}
+    .menuToggle.nes-btn {height: 40px; font-size: 12px;}
+    .nes-container.with-title.is-dark {width: 100%;}
+    h2 {font-size: 24px;}
+}
