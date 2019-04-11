@@ -25,6 +25,13 @@ h2 {
     font-size: 32px;
 }
 
+/* INPUT VALIDATION  */
+
+.inputValidation {
+    color: #cc8b41;
+    font-size: 10px;
+}
+
 /* CONTAINER FORMATTING */
 
 /* #gameMenu {

@@ -20,21 +20,22 @@
             <p class="title">TRAINS!!!</p>
             
             <div id="gameWelcome" class="nes-container with-title is-dark">
-                <p class="title">Chugga, chugga, CHOO! CHOO!</p>
+                <p class="title">CHOO CHOO ... WHOOOOOP! WHOOOOOOOOOOOOOP!</p>
             </div>
             
             <div id="gameSchedule" class="nes-container with-title is-dark">
                 <p class="title">Current Train Schedule</p>
                 <div class="nes-table-responsive">
-                    <table class="nes-table is-bordered is-dark" id="employee-table">
+                    <table class="nes-table is-bordered is-dark" id="train-table">
                         <thead>
                             <tr>
-                                <th>Employee Name</th>
-                                <th>Role</th>
-                                <th>Start Date</th>
-                                <th>Months Worked</th>
-                                <th>Monthly Rate ($)</th>
-                                <th>Total Billed ($)</th>
+                                <th>Train Name</th>
+                                <th>Destination</th>
+                                <th>Frequency (min)</th>
+                                <th>First Train</th>
+                                <th>Next Arrival</th>
+                                <th>Minutes Away</th>
+                                <th>Last Train</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,23 +48,27 @@
                 <p class="title">Add Train</p>
                 <form>
                     <div class="nes-field">
-                        <label for="employee-name-input">Train Name</label>
-                        <input class="nes-input is-error" id="employee-name-input" placeholder="Jane Doe" type="text">
+                        <label for="train-name-input">Train Name</label>
+                        <input class="nes-input is-error" id="train-name-input" placeholder="Reading Railroad" type="text">
                     </div>
+                    <div id="train-name-validation" class="inputValidation"></div><br>
                     <div class="nes-field">
-                        <label for="role-input">Destination</label>
-                        <input class="nes-input is-error" id="role-input" placeholder="CEO" type="text">
+                        <label for="destination-input">Destination</label>
+                        <input class="nes-input is-error" id="destination-input" placeholder="Djibouti" type="text">
                     </div>
+                    <div id="destination-validation" class="inputValidation"></div><br>
                     <div class="nes-field">
-                        <label for="start-input">First Train Time (HH:mm aka military time)</label>
-                        <input class="nes-input is-error" id="start-input" placeholder="01/08/1989" type="text">
+                        <label for="start-time-input">First Train Time</label>
+                        <input class="nes-input is-error" id="start-time-input" placeholder="14:15" type="text">
                     </div>
+                    <div id="start-time-validation" class="inputValidation"></div><br>
                     <div class="nes-field">
-                        <label for="rate-input">Frequency (min)</label>
-                        <input class="nes-input is-error" id="rate-input" placeholder="200000" type="text">
+                        <label for="frequency-input">Train Frequency (min)</label>
+                        <input class="nes-input is-error" id="frequency-input" placeholder="21" type="number" max="1079">
                     </div>
-                    <button type="submit" class="nes-btn" id="add-employee-btn">Submit</button>
-                    <input type="reset" id="clear-form-btn" class="nes-btn" value="Clear" />
+                    <div id="frequency-validation" class="inputValidation"></div><br>
+                    <button type="submit" class="nes-btn" id="add-train-btn">Submit</button>
+                    <button type="reset" class="nes-btn" id="clear-form-btn">Clear</button>
                 </form>
             </div>
             

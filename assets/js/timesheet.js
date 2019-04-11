@@ -1,13 +1,16 @@
-// Steps to complete:
+// //// PSEUDOCODE
+// CREATE A START AND END LIMIT FOR SCHEDULING
+// ERROR TEXT IF THE ENTERED PARAMETERS ARE NOT WITHIN LIMITS. PREVENT FORM FROM SUBMITTING IF ALL FIELDS ARE NOT FILLED OUT AND/OR INCORRECT
+// START = NO TIME BEFORE 6:00
+// END = NO TIME AFTER 23:59
+// FREQUENCY = CAN NOT EXCEED A CERTAIN NUMBER, MAX TIME AVAILABLE IS 1079 MINUTES, BUT IF I CAN MAKE THE INPUT RELATIVE TO START TIME, I CAN SET THE UPPER LIMIT
+// I.E. IF START = 6 THEN MAX FREQUENCY = 1079 ELSE (MOMENT - 6) - 1079
+// FREQUENCY ARRAY = LOOP A RANGE OF VALUES FOR TRAIN TIMES FROM START TIME TO WHEREVER THE END TIME WOULD BE 
+// NEXT ARRIVAL IS THE CURRENT TIME COMPARED TO THE ARRAY WHICH MATCHES THE NEXT CLOSEST HIGHEST VALUE 
+// MINUTES AWAY IS CALCULATED AS MOMENT - NEXT ARRIVAL
 
-// 1. Initialize Firebase
-// 2. Create button for adding new employees - then update the html + update the database
-// 3. Create a way to retrieve employees from the employee database.
-// 4. Create a way to calculate the months worked. Using difference between start and current time.
-//    Then use moment.js formatting to set difference in months.
-// 5. Calculate Total billed
 
-// 1. Initialize Firebase
+// CALL THE FIREBASE INSTANCE SETUP FOR THE TRAINS
 var config = {
     apiKey: "AIzaSyDlCdIz-aBbnPplZanUqqup22xdCUQlLr8",
     authDomain: "trainschedulerextraordinaire.firebaseapp.com",
@@ -15,99 +18,226 @@ var config = {
     projectId: "trainschedulerextraordinaire",
     storageBucket: "trainschedulerextraordinaire.appspot.com",
     messagingSenderId: "606497313970"
-  };
-  firebase.initializeApp(config);
-  
-  var database = firebase.database();
-  
-  // 2. Button for adding Employees
-  $("#add-employee-btn").on("click", function (event) {
-    event.preventDefault();
-  
-    // Grabs user input
-    var empName = $("#employee-name-input").val().trim();
-    var empRole = $("#role-input").val().trim();
-    var empStart = moment($("#start-input").val().trim(), "MM/DD/YYYY").format("X");
-    var empRate = $("#rate-input").val().trim();
-  
-    // Creates local "temporary" object for holding employee data
-    var newEmp = {
-      name: empName,
-      role: empRole,
-      start: empStart,
-      rate: empRate
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
+// INPUT VALIDATION WITH LIMITS FOR FORM
+function nameCheck() {
+    var x, text;
+
+    // Get the value of the input field with id="train-name-input"
+    x = document.getElementById("train-name-input").value;
+    // IF x IS null ERROR, OTHERWISE ACCEPT
+    if (x.length === 0) {
+        text = "Please enter a name. Any name would be fine.";
+    } else {
+        text = "NAME RECOGNIZED.";
+    }
+    document.getElementById("train-name-validation").innerHTML = text;
+};
+
+function destinationCheck() {
+    var x, text;
+
+    // Get the value of the input field with id="destination-input"
+    x = document.getElementById("destination-input").value;
+    // IF x IS null ERROR, OTHERWISE ACCEPT
+    if (x.length === 0) {
+        text = "Please enter a destination. Any destination would be fine.";
+    } else {
+        text = "DESTINATION RECOGNIZED.";
+    }
+    document.getElementById("destination-validation").innerHTML = text;
+};
+
+
+// // MILITARY TIME CHECK FUNCTION
+// function isMilitaryTmeString(militaryTime) {
+//     // Check to make sure something was entered
+//     if (militaryTime == null) {
+//         return false;
+//     }
+//     // Check to make sure there are 5 characters
+//     if (militaryTime.length() != 5) {
+
+//         return false;
+//     }
+
+//     // Storing characters into char variable 
+//     var hourOne = militaryTime.charAt(0);
+//     var hourTwo = militaryTime.charAt(1);
+//     var colon = militaryTime.charAt(2);
+//     var minuteOne = militaryTime.charAt(3);
+//     var minuteTwo = militaryTime.charAt(4);
+
+//     //first position of hour must be 0 or 1 or 2
+//     if (hourOne != '0' && hourOne != '1' && hourOne != '2') {
+
+//         return false;
+//     }
+//     //if first position of hour is 0 or 1 then second
+//     //position must be 0-9
+//     if (hourOne == '0' || hourOne == '1') {
+
+//         if (hourTwo < '0' || hourTwo > '9') {
+//             return false;
+//         }
+
+//     //if hourOne equal 2 then second position must be 0-3
+//     } else {
+
+//         if (hourTwo < '0' || hourTwo > '3') {
+//             return false;
+//         }
+//     }
+//    //third position must be colon
+//     if (colon != ':') {
+
+//         return false;
+//     }
+//     // fourth position must be 0-5
+//     if (minuteOne < '0' || minuteOne > '5') {
+//         return false;
+//     }
+
+//     //fifth position must be 0-9
+//     if (minuteTwo < '0' || minuteTwo > '9') {
+//         return false;
+//     }
+//     // String is valid military time
+//     return true;
+// };
+
+function startTimeCheck() {
+    var x, text;
+
+    // Get the value of the input field with id="start-time-input"
+    x = document.getElementById("start-time-input").value;
+    x.toMomentFormatString("dd.MM.yyyy")
+    // if (timeCheck === false) {
+    //     text = "Please enter a valid, 4 digit, colon separated time (HH:MM)"
+    // } else {
+    //     text = "START TIME ACCEPTED"
+    // };
+
+    // CONVERT STRING TO NUMBER
+    // IF x IS NaN OR START TIME IS LESS THAN 6 OR GREATER THAN 24
+    if (isNaN(x) || x < 360 || x > 1440) {
+        text = "No train runs earlier than 6 or later than Midnight";
+    } else {
+        // TODO: insert a favicon instead of filler text below
+        text = "ROGER, ROGER";
     };
-  
-    // Uploads employee data to the database
-    database.ref().push(newEmp);
-  
-    // Logs everything to console
-    console.log(newEmp.name);
-    console.log(newEmp.role);
-    console.log(newEmp.start);
-    console.log(newEmp.rate);
-  
+    document.getElementById("start-time-validation").innerHTML = text;
+};
+
+// function frequencyCheck() {
+//     var x, text;
+
+//     var trainStart = moment($("#start-time-input").val().trim(), "HH:mm").format("X");
+//     // FORMAT START TIME
+//     var trainStartPretty = moment.unix(trainStart).format("HH:mm");
+
+//     // Get the value of the input field with id="frequency-input"
+//     x = document.getElementById("frequency-input").value;
+
+//     // IF x IS NaN OR START TIME IS LESS THAN 6 OR GREATER THAN 24
+//     if (isNaN(x) || x < 6 || x > 24) {
+//       text = "No train runs earlier than 6 or later than Midnight";
+//     } else {
+//         // TODO: insert a favicon instead of filler text below
+//       text = "ROGER, ROGER";
+//     }
+//     document.getElementById("frequency-validation").innerHTML = text;
+//   };
+
+// BUTTON FOR ADDING FORM INFORMATION
+$("#add-train-btn").on("click", function (event) {
+    event.preventDefault();
+
+    nameCheck();
+    destinationCheck();
+    startTimeCheck();
+    // frequencyCheck();
+
+    // USER INPUT TO PASS ON BUTTON CLICK
+    var trainName = $("#train-name-input").val().trim();
+    var trainDest = $("#destination-input").val().trim();
+    var trainStart = moment($("#start-time-input").val().trim(), "HH:mm").format("X");
+    var trainFreq = $("#frequency-input").val().trim();
+
+    // TEMP OBJECT TO HOLD FORM INPUT
+    var newTrain = {
+        name: trainName,
+        dest: trainDest,
+        start: trainStart,
+        freq: trainFreq
+    };
+
+    // UPLOAD THE FORM DATA TO FIREBASE DB
+    database.ref().push(newTrain);
+
+    console.log([newTrain.name, newTrain.dest, (typeof newTrain.dest), newTrain.start, newTrain.freq]);
+
     alert("Employee successfully added");
-  
-    // Clears all of the text-boxes
-    $("#employee-name-input").val("");
-    $("#role-input").val("");
-    $("#start-input").val("");
-    $("#rate-input").val("");
-  });
-  
-  // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
-  database.ref().on("child_added", function (childSnapshot) {
+
+    // CLEAR THE FORM ONCE DATA UPLOADED TO DB
+    $("#train-name-input").val("");
+    $("#destination-input").val("");
+    $("#start-time-input").val("");
+    $("#frequency-input").val("");
+});
+
+// CALL THE DATA FROM THE FIREBASE DB TO APPEND TO TABLE
+database.ref().on("child_added", function (childSnapshot) {
     console.log(childSnapshot.val());
-  
-    // Store everything into a variable.
-    var empName = childSnapshot.val().name;
-    var empRole = childSnapshot.val().role;
-    var empStart = childSnapshot.val().start;
-    var empRate = childSnapshot.val().rate;
-  
-    // Employee Info
-    console.log(empName);
-    console.log(empRole);
-    console.log(empStart);
-    console.log(empRate);
-  
-    // Prettify the employee start
-    var empStartPretty = moment.unix(empStart).format("MM/DD/YYYY");
-  
+
+    // STORE AS VARIABLES
+    var trainName = childSnapshot.val().name;
+    var trainDest = childSnapshot.val().dest;
+    var trainStart = childSnapshot.val().start;
+    var trainFreq = childSnapshot.val().freq;
+
+    console.log([trainName, trainDest, trainStart, trainFreq]);
+
+    // FORMAT START TIME
+    var trainStartPretty = moment.unix(trainStart).format("HH:mm");
+
     // Calculate the months worked using hardcore math
     // To calculate the months worked
-    var empMonths = moment().diff(moment(empStart, "X"), "months");
-    console.log(empMonths);
-  
+    var trainMonths = moment().diff(moment(trainStart, "X"), "months");
+    console.log(trainMonths);
+
     // Calculate the total billed rate
-    var empBilled = empMonths * empRate;
-    console.log(empBilled);
-  
+    var trainBilled = trainMonths * trainFreq;
+    console.log(trainBilled);
+
     // Create the new row
     var newRow = $("<tr>").append(
-      $("<td>").text(empName),
-      $("<td>").text(empRole),
-      $("<td>").text(empStartPretty),
-      $("<td>").text(empMonths),
-      $("<td>").text(empRate),
-      $("<td>").text(empBilled)
+        $("<td>").text(trainName),
+        $("<td>").text(trainDest),
+        $("<td>").text(trainStartPretty),
+        $("<td>").text(trainMonths),
+        $("<td>").text(trainFreq),
+        $("<td>").text(trainBilled)
     );
-  
+
     // Append the new row to the table
-    $("#employee-table > tbody").append(newRow);
-  });
-  
+    $("#train-table > tbody").append(newRow);
+});
+
   // Example Time Math
   // -----------------------------------------------------------------------------
   // Assume Employee start date of January 1, 2015
   // Assume current date is March 1, 2016
-  
+
   // We know that this is 15 months.
   // Now we will create code in moment.js to confirm that any attempt we use meets this test case
 
 //   $(document.body).ready(function () {
 
-    
+
 
 // });
