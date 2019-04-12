@@ -18,11 +18,11 @@
     <div class="nes-container">
         <div class="nes-container with-title is-dark">
             <p class="title">TRAINS!!!</p>
-            
+
             <div id="gameWelcome" class="nes-container with-title is-dark">
                 <p class="title">CHOO CHOO ... WHOOOOOP! WHOOOOOOOOOOOOOP!</p>
             </div>
-            
+
             <div id="gameSchedule" class="nes-container with-title is-dark">
                 <p class="title">Current Train Schedule</p>
                 <div class="nes-table-responsive">
@@ -43,13 +43,14 @@
                     </table>
                 </div>
             </div>
-            
+
             <div id="gameInput" class="nes-container with-title is-dark">
                 <p class="title">Add Train</p>
                 <form>
                     <div class="nes-field">
                         <label for="train-name-input">Train Name</label>
-                        <input class="nes-input is-error" id="train-name-input" placeholder="Reading Railroad" type="text">
+                        <input class="nes-input is-error" id="train-name-input" placeholder="Reading Railroad"
+                            type="text">
                     </div>
                     <div id="train-name-validation" class="inputValidation"></div><br>
                     <div class="nes-field">
@@ -64,20 +65,21 @@
                     <div id="start-time-validation" class="inputValidation"></div><br>
                     <div class="nes-field">
                         <label for="frequency-input">Train Frequency (min)</label>
-                        <input class="nes-input is-error" id="frequency-input" placeholder="21" type="number" max="1079">
+                        <input class="nes-input is-error" id="frequency-input" placeholder="21" type="number"
+                            max="1079">
                     </div>
                     <div id="frequency-validation" class="inputValidation"></div><br>
                     <button type="submit" class="nes-btn" id="add-train-btn">Submit</button>
                     <button type="reset" class="nes-btn" id="clear-form-btn">Clear</button>
                 </form>
             </div>
-            
+
         </div>
     </div>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/js/timesheet.js"></script>
-    
+
 </body>
 
 </html>

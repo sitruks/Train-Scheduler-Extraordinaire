@@ -9,6 +9,10 @@
 // NEXT ARRIVAL IS THE CURRENT TIME COMPARED TO THE ARRAY WHICH MATCHES THE NEXT CLOSEST HIGHEST VALUE 
 // MINUTES AWAY IS CALCULATED AS MOMENT - NEXT ARRIVAL
 
+// CREATE GLOBAL VARIABLES
+
+var start = 360;
+var end = 
 
 // CALL THE FIREBASE INSTANCE SETUP FOR THE TRAINS
 var config = {
@@ -52,79 +56,82 @@ function destinationCheck() {
     document.getElementById("destination-validation").innerHTML = text;
 };
 
+// MILITARY TIME CHECK FUNCTION
+// having the variable in the function the same as calling a blank variable??? i.e. var militaryTime; 
+function checkMilitaryTime(militaryTime) {
+    // Check to make sure something was entered
+    if (militaryTime == null) {
+        return false;
+    }
+    // Check to make sure there are 5 characters
+    if (militaryTime.length() != 5) {
 
-// // MILITARY TIME CHECK FUNCTION
-// function isMilitaryTmeString(militaryTime) {
-//     // Check to make sure something was entered
-//     if (militaryTime == null) {
-//         return false;
-//     }
-//     // Check to make sure there are 5 characters
-//     if (militaryTime.length() != 5) {
+        return false;
+    }
 
-//         return false;
-//     }
+    // Storing characters into char variable 
+    var hourOne = militaryTime.charAt(0);
+    var hourTwo = militaryTime.charAt(1);
+    var colon = militaryTime.charAt(2);
+    var minuteOne = militaryTime.charAt(3);
+    var minuteTwo = militaryTime.charAt(4);
 
-//     // Storing characters into char variable 
-//     var hourOne = militaryTime.charAt(0);
-//     var hourTwo = militaryTime.charAt(1);
-//     var colon = militaryTime.charAt(2);
-//     var minuteOne = militaryTime.charAt(3);
-//     var minuteTwo = militaryTime.charAt(4);
+    //first position of hour must be 0 or 1 or 2
+    if (hourOne != '0' && hourOne != '1' && hourOne != '2') {
 
-//     //first position of hour must be 0 or 1 or 2
-//     if (hourOne != '0' && hourOne != '1' && hourOne != '2') {
+        return false;
+    }
+    //if first position of hour is 0 or 1 then second
+    //position must be 0-9
+    if (hourOne == '0' || hourOne == '1') {
 
-//         return false;
-//     }
-//     //if first position of hour is 0 or 1 then second
-//     //position must be 0-9
-//     if (hourOne == '0' || hourOne == '1') {
+        if (hourTwo < '0' || hourTwo > '9') {
+            return false;
+        }
 
-//         if (hourTwo < '0' || hourTwo > '9') {
-//             return false;
-//         }
+        //if hourOne equal 2 then second position must be 0-3
+    } else {
 
-//     //if hourOne equal 2 then second position must be 0-3
-//     } else {
+        if (hourTwo < '0' || hourTwo > '3') {
+            return false;
+        }
+    }
+    //third position must be colon
+    if (colon != ':') {
 
-//         if (hourTwo < '0' || hourTwo > '3') {
-//             return false;
-//         }
-//     }
-//    //third position must be colon
-//     if (colon != ':') {
+        return false;
+    }
+    // fourth position must be 0-5
+    if (minuteOne < '0' || minuteOne > '5') {
+        return false;
+    }
 
-//         return false;
-//     }
-//     // fourth position must be 0-5
-//     if (minuteOne < '0' || minuteOne > '5') {
-//         return false;
-//     }
-
-//     //fifth position must be 0-9
-//     if (minuteTwo < '0' || minuteTwo > '9') {
-//         return false;
-//     }
-//     // String is valid military time
-//     return true;
-// };
+    //fifth position must be 0-9
+    if (minuteTwo < '0' || minuteTwo > '9') {
+        return false;
+    }
+    // String is valid military time
+    return true;
+};
 
 function startTimeCheck() {
     var x, text;
 
+    checkMilitaryTime();
+    if (checkMilitaryTime != true) {
+        text = "Please enter a the time in the correct format --> (HH:MM)."
+    };
+
     // Get the value of the input field with id="start-time-input"
     x = document.getElementById("start-time-input").value;
-    x.toMomentFormatString("dd.MM.yyyy")
-    // if (timeCheck === false) {
-    //     text = "Please enter a valid, 4 digit, colon separated time (HH:MM)"
-    // } else {
-    //     text = "START TIME ACCEPTED"
-    // };
+    var militaryTime = moment(x, "HH:mm");
+    var startHours = moment(militaryTime).format("kk");   // PARSED AS HOURS
+    var startMinutes = moment(militaryTime).format("mm");   // PARSED AS MINUTES
+    var startTime = parseInt(startHours) * 60 + parseInt(startMinutes);
+    console.log([startHours, startMinutes, startTime]);
 
-    // CONVERT STRING TO NUMBER
     // IF x IS NaN OR START TIME IS LESS THAN 6 OR GREATER THAN 24
-    if (isNaN(x) || x < 360 || x > 1440) {
+    if (isNaN(startTime) || startTime < 360 || startTime > 1440) {
         text = "No train runs earlier than 6 or later than Midnight";
     } else {
         // TODO: insert a favicon instead of filler text below
@@ -133,25 +140,27 @@ function startTimeCheck() {
     document.getElementById("start-time-validation").innerHTML = text;
 };
 
-// function frequencyCheck() {
-//     var x, text;
+function frequencyCheck() {
+    var x, text;
 
-//     var trainStart = moment($("#start-time-input").val().trim(), "HH:mm").format("X");
-//     // FORMAT START TIME
-//     var trainStartPretty = moment.unix(trainStart).format("HH:mm");
 
-//     // Get the value of the input field with id="frequency-input"
-//     x = document.getElementById("frequency-input").value;
+    // FREQUENCY = CAN NOT EXCEED A CERTAIN NUMBER, MAX TIME AVAILABLE IS 1079 MINUTES, BUT IF I CAN MAKE THE INPUT RELATIVE TO START TIME, I CAN SET THE UPPER LIMIT
+    // I.E. IF START = 6 THEN MAX FREQUENCY = 1079 ELSE (MOMENT - 6) - 1079
+    // FREQUENCY ARRAY = LOOP A RANGE OF VALUES FOR TRAIN TIMES FROM START TIME TO WHEREVER THE END TIME WOULD BE 
 
-//     // IF x IS NaN OR START TIME IS LESS THAN 6 OR GREATER THAN 24
-//     if (isNaN(x) || x < 6 || x > 24) {
-//       text = "No train runs earlier than 6 or later than Midnight";
-//     } else {
-//         // TODO: insert a favicon instead of filler text below
-//       text = "ROGER, ROGER";
-//     }
-//     document.getElementById("frequency-validation").innerHTML = text;
-//   };
+    // Get the value of the input field with id="frequency-input"
+    x = document.getElementById("frequency-input").value;
+    console.log(typeof x);
+
+    // IF x IS NaN OR START TIME IS LESS THAN 6 OR GREATER THAN 24
+    if (isNaN(x) || x > 1080) {
+        text = "No train runs for longer than a day";
+    } else {
+        // TODO: insert a favicon instead of filler text below
+        text = "ROGER, ROGER";
+    }
+    document.getElementById("frequency-validation").innerHTML = text;
+};
 
 // BUTTON FOR ADDING FORM INFORMATION
 $("#add-train-btn").on("click", function (event) {
@@ -160,7 +169,7 @@ $("#add-train-btn").on("click", function (event) {
     nameCheck();
     destinationCheck();
     startTimeCheck();
-    // frequencyCheck();
+    frequencyCheck();
 
     // USER INPUT TO PASS ON BUTTON CLICK
     var trainName = $("#train-name-input").val().trim();
