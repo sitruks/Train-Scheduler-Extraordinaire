@@ -11,8 +11,8 @@
 
 // CREATE GLOBAL VARIABLES
 
-var start = 360;
-var end = 
+// var start = 360;
+// var end = 
 
 // CALL THE FIREBASE INSTANCE SETUP FOR THE TRAINS
 var config = {
